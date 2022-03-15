@@ -7,7 +7,9 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
+
 use app\models\LoginForm;
+use app\models\SignupForm;
 
 class SiteController extends Controller
 {
@@ -81,6 +83,24 @@ class SiteController extends Controller
 
         $model->password = '';
         return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * SignUp action.
+     *
+     * @return Response|string
+     */
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post(), 'SignupForm') && $model->signup()) {
+            return $this->goBack();
+        }
+
+        $model->password = '';
+        return $this->render('signup', [
             'model' => $model,
         ]);
     }
