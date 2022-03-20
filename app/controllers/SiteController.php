@@ -8,8 +8,11 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 
-use app\models\LoginForm;
+use app\models\Cities;
 use app\models\SignupForm;
+use app\models\LoginForm;
+use app\models\Utill;
+
 
 class SiteController extends Controller
 {
@@ -62,7 +65,23 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new Utill();
+        $session = $model->openSession();
+
+        if ($session->has('user_city')) {
+            return $this->redirect("/reviews/city?name=".$session->get('user_city'));
+        } else {
+            $api_result= $model->getUserCity(Yii::$app->request->userIP);
+            if ($api_result['status'] === 'fail') {
+                return $this->redirect('/cities/all');
+            } else {
+                $cities = new Cities();
+
+                $model->setParamsSession('user_city', $api_result['city']);
+                $model->setParamsSession('id_city', $cities->getId($api_result['city'])->id);
+                return $this->render('index', ['city' => $api_result['city']]);
+            }
+        }
     }
 
     /**
@@ -88,7 +107,7 @@ class SiteController extends Controller
     }
 
     /**
-     * SignUp action.
+     * Signup action.
      *
      * @return Response|string
      */
@@ -115,5 +134,9 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionAuthorContacts() {
+        return $this->renderPartial('modal_contacts');
     }
 }
