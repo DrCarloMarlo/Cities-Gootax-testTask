@@ -1,7 +1,7 @@
 <?php
 
-$params = require __DIR__ . '/params-local.php';
-$db = require __DIR__ . '/db-local.php';
+$params = require __DIR__ . '/params.php';
+$db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
@@ -21,6 +21,9 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+        ],
+        'session' => [
+            'class' => 'yii\web\CacheSession',
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
