@@ -9,15 +9,6 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
-    /**
-     * @return array the validation rules.
-     */
-    public function rules()
-    {
-        return [
-        ];
-    }
-
     public static function tableName()
     {
         return '{{author}}';
