@@ -1,2 +1,6 @@
 # phpstorm project files
 .idea
+# node modules files
+/frontend/node_modules
+
+*.config.js
