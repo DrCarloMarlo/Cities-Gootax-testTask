@@ -26,7 +26,7 @@ class SignupForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'email'], 'trim'],
+            [['username', 'email', 'phone'], 'trim'],
             [['username', 'email', 'password'], 'required', 'message' => 'Поле обязательно к заполнению'],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Учетная запись с указанным email уже существует'],
             ['email', 'email'],

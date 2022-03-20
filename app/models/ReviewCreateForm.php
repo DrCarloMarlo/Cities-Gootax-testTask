@@ -54,7 +54,7 @@ class ReviewCreateForm extends Model
         $status = $review->save() ? true : false;
 
         if ($status) {
-            $this->imageFile->saveAs($_SERVER["DOCUMENT_ROOT"] . '/uploads/' . $this->nameFile . '.' . $this->imageFile->extension);
+            if ($this->imageFile !== null) $this->imageFile->saveAs($_SERVER["DOCUMENT_ROOT"] . '/uploads/' . $this->nameFile . '.' . $this->imageFile->extension);
 
             foreach ($this->city as $city) {
                 $reviewRelation = new ReviewToCity();

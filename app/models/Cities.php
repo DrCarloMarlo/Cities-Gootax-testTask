@@ -25,7 +25,7 @@ class Cities extends ActiveRecord
     public function getReviewsList()
     {
         return $this->hasMany(ReviewToCity::class, ['id_city' => 'id'])
-            ->leftJoin('reviews', ['reviews.id' => 'reviews_cities.id_review']);
+            ->leftJoin('reviews', ['reviews.id' => 'review_cities_fk.id_review']);
     }
 
     public function getReview()
@@ -39,7 +39,7 @@ class Cities extends ActiveRecord
     public static function getAll()
     {
         return Cities::find()
-            ->select(['{{cities}}.id, {{cities}}.name', 'COUNT({{reviews_cities}}.id) as reviewsCount'])
+            ->select(['{{cities}}.id, {{cities}}.name', 'COUNT({{review_cities_fk}}.id) as reviewsCount'])
             ->joinWith('reviewsList')
             ->groupBy('{{cities}}.id')
             ->orderBy('name ASC')

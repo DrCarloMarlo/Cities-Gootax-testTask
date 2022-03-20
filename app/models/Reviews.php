@@ -31,7 +31,7 @@ class Reviews extends ActiveRecord
     public function getCitiesList()
     {
         return $this->hasMany(ReviewToCity::class, ['id_review' => 'id'])
-            ->leftJoin('cities', ['cities.id' => 'reviews_cities.id_city']);
+            ->leftJoin('cities', ['cities.id' => 'review_cities_fk.id_city']);
     }
 
     public function getReviewsCity()

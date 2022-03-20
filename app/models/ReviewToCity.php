@@ -15,6 +15,6 @@ class ReviewToCity extends ActiveRecord
     }
     public static function tableName()
     {
-        return '{{reviews_cities}}';
+        return '{{review_cities_fk}}';
     }
 }
