@@ -33,6 +33,7 @@ class Cities extends ActiveRecord
         return $this->hasMany(Reviews::class, ['id' => 'id_review'])
             ->select('author.username as author_fio, title, text, rating, img, id_author')
             ->joinWith('author')
+            ->orderBy('rating DESC')
             ->via('reviewsList');
     }
 
