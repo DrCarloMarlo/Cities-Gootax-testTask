@@ -50,7 +50,7 @@ class ReviewsController extends Controller
         if ($model->load(Yii::$app->request->post(), 'ReviewCreateForm'))
         {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($model->create()) return $this->goBack();
+            if ($model->create()) return Yii::$app->homeUrl;
         }
 
         $cities = new Cities();
