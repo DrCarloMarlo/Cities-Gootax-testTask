@@ -12,6 +12,7 @@ class ReviewCreateForm extends Model
     public $text;
     public $rating;
     public $city;
+    public $img;
 
     /**
      * @var UploadedFile
@@ -44,17 +45,20 @@ class ReviewCreateForm extends Model
         $review->text = $this->text;
         $review->rating = $this->rating;
 
-        if ($this->imageFile !== null) {
-            $this->nameFile = $this->constructName();
-            $review->img = $this->nameFile . '.' . $this->imageFile->extension;
-        }
         $review->id_author = Yii::$app->user->identity->id;
         $review->date_create = time();
 
         $status = $review->save() ? true : false;
 
+        if ($this->imageFile !== null) {
+            $review->img = $this->constructName();
+            $review->save();
+
+            $this->imageFile->saveAs($_SERVER["DOCUMENT_ROOT"] . '/uploads/' . $review->img);
+        }
+
         if ($status) {
-            if ($this->imageFile !== null) $this->imageFile->saveAs($_SERVER["DOCUMENT_ROOT"] . '/uploads/' . $this->nameFile . '.' . $this->imageFile->extension);
+            if ($this->imageFile !== null)
 
             foreach ($this->city as $city) {
                 $reviewRelation = new ReviewToCity();
@@ -69,6 +73,6 @@ class ReviewCreateForm extends Model
     }
 
     private function constructName() {
-        return uniqid();
+        return uniqid()  . '.' . $this->imageFile->extension;
     }
 }
