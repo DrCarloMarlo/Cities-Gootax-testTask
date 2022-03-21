@@ -21,4 +21,5 @@ You can then install this project template using the following command:
 ~~~
 cd app
 composer install
+php yii migrate
 ~~~
