@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Session;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -66,20 +67,26 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $model = new Utill();
-        $session = $model->openSession();
+        $session = new Session();
+        $sessionNow = $session->openSession();
 
-        if ($session->has('user_city')) {
-            return $this->redirect("/reviews/city?name=".$session->get('user_city'));
+        if ($sessionNow->has('user_city')) {
+            return $this->redirect("/reviews/city?name=".$sessionNow->get('user_city'));
         } else {
             $api_result= $model->getUserCity(Yii::$app->request->userIP);
             if ($api_result['status'] === 'fail') {
                 return $this->redirect('/cities/all');
             } else {
                 $cities = new Cities();
+                $id_city = $cities->getId($api_result['city']);
 
-                $model->setParamsSession('user_city', $api_result['city']);
-                $model->setParamsSession('id_city', $cities->getId($api_result['city'])->id);
-                return $this->render('index', ['city' => $api_result['city']]);
+                if ($id_city !== false) {
+                    $session->setParamsSession('user_city', $api_result['city']);
+                    $session->setParamsSession('id_city', $id_city);
+                    return $this->render('index', ['city' => $api_result['city']]);
+                } else {
+                    return $this->redirect('/cities/all');
+                }
             }
         }
     }

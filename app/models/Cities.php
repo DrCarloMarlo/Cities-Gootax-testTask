@@ -63,7 +63,7 @@ class Cities extends ActiveRecord
             ->where(['name' => $name])
             ->one();
 
-        return $result;
+        return $result === null ? false : $result->id;
     }
 
     public static function checkExist($name)
